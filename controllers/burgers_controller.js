@@ -16,7 +16,7 @@ router.get("/", function(req, res) {
   });
 });
 
-router.post("/api/burger", function(req, res) {
+router.post("/api/burgers", function(req, res) {
   burgers.create(
     ["burger_name", "devoured"],
     [req.body.burger_name, req.body.devoured],
@@ -34,7 +34,7 @@ router.put("/api/burger/:id", function(req, res) {
 
   burgers.update(
     {
-      burger_name: req.body.burger_name
+      devoured: req.body.devoured
     },
     condition,
     function(result) {
@@ -48,7 +48,9 @@ router.put("/api/burger/:id", function(req, res) {
 });
 
 router.delete("/api/burger/:id", function(req, res) {
-  burgers.delete(req.params.id, function(result) {
+  var condition = "id = " + req.params.id;
+
+  burgers.delete(condition, function(result) {
     if (result.affectedRows === 0) {
       // If an error occurred, send a generic server failure
       return res.status(404).end();

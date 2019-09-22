@@ -38,12 +38,12 @@ var orm = {
   },
   create: function(table, cols, vals, cb) {
     var queryString = "INSERT INTO " + table;
-
+    console.log(vals);
     queryString += " (";
     queryString += cols.toString();
     queryString += ") ";
     queryString += "VALUES (";
-    queryString += printQuestionMarks(vals.length);
+    queryString += vals[0] + "," + vals[1];
     queryString += ") ";
 
     console.log(queryString);
@@ -73,15 +73,20 @@ var orm = {
       cb(result);
     });
   },
-  delete: function(table, id, cb) {
-    var queryString = `DELETE FROM ${table} WHERE id = ${id}`;
-    connection.query(queryString, function(err, results) {
+  delete: function(table, condition, cb) {
+    var queryString = "DELETE FROM " + table;
+    queryString += " WHERE ";
+    queryString += condition;
+
+    connection.query(queryString, function(err, result) {
       if (err) {
         throw err;
       }
-      cb(results);
+
+      cb(result);
     });
   }
 };
 
+// Export the orm object for the model (cat.js).
 module.exports = orm;
